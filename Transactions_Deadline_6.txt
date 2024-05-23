@@ -1,0 +1,116 @@
+DBMS Project Deadline 6
+----------------------------
+Ashish Bargoti (2022114)  Debjit Banerji (2022146)  Kartikeya Sehgal (2022244)
+----------------------------
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Conflicting Transactions:
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Transaction 1:
+
+// The stock of the porduct corresponding to the product_id = 1 is lesser than 10 and so is being updated by the admin.
+// Cart of Customer 6 has 10 items all corresponding to the same product_id = 1
+// So, in this case a RW conflict happens since while checking for the appropriate quantity in stock to place the order for the customer, the customer gets the response that order cannot be placed, but actually it would have been possible to place the order only if the read for the second side would have waited for the commit of the first side (RW conflict).
+
+Side 1: (Admin)
+START TRANSACTION;
+UPDATE inventory I
+SET I.Quantity = I.Quantity+10
+WHERE I.Product_ID = 1 AND I.Warehouse_ID = 1;
+
+Side 2: (Customer)
+START TRANSACTION;
+INSERT INTO Orders VALUES (1020,6,'2024-04-18',0,'Home','45');
+COMMIT;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Transaction 2:
+
+// Scenario: Carts of Customer 6 and Customer 10 have 10 and 14 items of the same product_id = 1 but quantity of product_id in inventory is only 20.
+// In this case, since both the users are placing orders concurrently, both of them will be shown that sufficient quantity is available, and so there will be a WW conflict, and therefore leaving the database in an inconsistent state with quantity of products for product_id = 1 as -4.
+
+Side 1: (Customer)
+START TRANSACTION;
+INSERT INTO Orders VALUES (1020,6,'2024-04-18',0,'Home','45');
+
+
+Side 2: (Customer)
+START TRANSACTION;
+INSERT INTO Orders VALUES (1021,10,'2024-04-18',0,'Home','402');
+COMMIT;
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Non-Conflicting Transactions:
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Transaction 1:
+
+// The stock of the porduct corresponding to the product_id = 1 is more than 10 and so is being updated by the admin.
+// Cart of Customer 6 has 10 items all corresponding to the same product_id = 1
+// So, in this case, the customer will be able to pace his order quatity is sufficient to meet his demands even before updation by admin
+Side 1: (Admin)
+START TRANSACTION;
+UPDATE inventory I
+SET I.Quantity = I.Quantity+10
+WHERE I.Product_ID = 1 AND I.Warehouse_ID = 1;
+COMMIT;
+
+Side 2: (Customer)
+START TRANSACTION;
+INSERT INTO Orders VALUES (1020,6,'2024-04-18',0,'Home','45');
+COMMIT;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Transaction 2:
+
+// Scenario: In this scenario, two customers are interacting with a database. Each customer's action involves modifying different tables within the database. Since their actions don't overlap in terms of the data they are modifying, there are no conflicts arising from simultaneous write operations on the same table.
+
+Side 1: (Customer)
+START TRANSACTION;
+INSERT INTO Orders VALUES (1020,6,'2024-04-18',0,'Home','45');
+COMMIT;
+
+Side 2: (Customer)
+START TRANSACTION;
+INSERT INTO cart (Customer_ID, Product_ID, Quantity, Total_Price, Added_Date) VALUES(1, 9, 10, 41999.00, '2024-02-12');
+COMMIT;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Transaction 3:
+
+// 
+In this scenario, two users, a customer, and an admin, are accessing the database. They're both performing read operations, meaning they're retrieving data from the database rather than modifying it.Since both users are only retrieving data and not modifying it, there are no write operations taking place on the same table. Therefore, there's no potential for conflicts arising from concurrent write operations.
+
+Side 1: (Customer)
+START TRANSACTION;
+SELECT * FROM PRODUCTS WHERE PRODUCT_ID=5;
+COMMIT;
+
+Side 2: (Admin)
+START TRANSACTION;
+SELECT * FROM Customers;
+COMMIT;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Transaction 4:
+
+//  An admin is updating the data about warehouses partnered with croma_online and anotehr Admin is reading the same data while placing a shipment order. So, to avoid the RW conflict, we are commiting thw write action before the read action takes place. If this hadn't been done, the Admin would not be able to place an order to Warehouse 11 (newly added). It can also be considered non-conflicting since both the admins are updating values in separate tables.
+
+Side 1: (Admin)
+START TRANSACTION;
+INSERT INTO Warehouses VALUES (11,"LUCKY Warehouse","9898112200", "Malviya Nagar", "New Delhi", "Delhi", "India", "110050");
+COMMIT;
+
+Side 2: (Admin)
+START TRANSACTION;
+INSERT INTO Restock_details VALUES(11, 7, 5, 100, '2024-04-18');
+COMMIT;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
