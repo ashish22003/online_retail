@@ -9,7 +9,7 @@ import numpy as np
 # from streamlit_lottie import st_lottie 
 
 def launch_connection():
-    db = ms.connect(host='localhost',user='root',passwd='2003',database='croma_online')
+    db = ms.connect(host='sql12.freemysqlhosting.net',user='sql12708755',passwd='e5SyF2djWm',database='sql12708755')
     return db
 
 def display_header():
