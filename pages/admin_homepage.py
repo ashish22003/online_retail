@@ -1,5 +1,5 @@
 
-from utility import st, launch_connection, pd, sns, np, plt,ms
+from utility import st, launch_connection, pd, np, plt,ms
 
 from menu import menu_with_redirect
 
