@@ -9,7 +9,8 @@ import numpy as np
 # from streamlit_lottie import st_lottie 
 
 def launch_connection():
-    db = ms.connect(host='sql12.freemysqlhosting.net',user='sql12708755',passwd='e5SyF2djWm',database='sql12708755')
+    # db = ms.connect(host='sql12.freemysqlhosting.net',user='sql12708755',passwd='e5SyF2djWm',database='sql12708755')
+    db = ms.connect(host='localhost',user='id22211140_root',passwd='online_croma@P123',database='id22211140_online_croma')
     
     return db
 
