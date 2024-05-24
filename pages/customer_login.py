@@ -39,10 +39,10 @@ def customer_login_page():
         # Add your login logic here
         if inp and password:
             if selected_method == "Email":
-                cur.execute("SELECT * from Customer WHERE Email_ID = %s", (inp,))
+                cur.execute("SELECT * from customer WHERE Email_ID = %s", (inp,))
             elif selected_method == "Phone Number":
                 # Add logic for phone number login
-                cur.execute("SELECT * from Customer WHERE Contact_Number= %s", (inp,))
+                cur.execute("SELECT * from customer WHERE Contact_Number= %s", (inp,))
 
             record = cur.fetchall()
             
