@@ -9,7 +9,7 @@ cur=db.cursor()
 
 def place_shipment_orders():
     st.header("Place Shipment Orders")
-    cur.execute(f"Select W.Warehouse_ID, W.Name from Warehouses W")
+    cur.execute(f"Select W.Warehouse_ID, W.Name from warehouses W")
     temp = cur.fetchall()
     warehouse_options = {}
     for item in temp:
@@ -91,7 +91,7 @@ def inventory_details():
 
     # purchase details
     st.markdown("# Inventory Purchase Details:")
-    cur.execute("select * from purchase_order;")
+    cur.execute("select * from PURCHASE_ORDER;")
     result=cur.fetchall()
     temp=[("Purchase_ID","Payment_Mode","Total_Amount","Payment Status","Payment Date","Payment Time")] + (list)(result)
     st.table(temp)
