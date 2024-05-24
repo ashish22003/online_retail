@@ -45,7 +45,7 @@ def view_order_statistics():
     st.markdown("# Order Statistics")
     
     order_df = pd.read_sql("SELECT Order_ID, Customer_ID, Order_Placement_Date FROM orders;", con=db) 
-    product_df = pd.read_sql("SELECT Product_ID, COUNT(Order_ID) AS Num_Orders, SUM(Quantity) AS Total_Quantity FROM orderItems GROUP BY Product_ID;", con=db) 
+    product_df = pd.read_sql("SELECT Product_ID, COUNT(Order_ID) AS Num_Orders, SUM(Quantity) AS Total_Quantity FROM OrderItems GROUP BY Product_ID;", con=db) 
     cart_df = pd.read_sql("SELECT Customer_ID, SUM(Total_Price) AS Total_Price FROM cart GROUP BY Customer_ID;", con=db) 
     address_df = pd.read_sql("SELECT State, COUNT(Customer_ID) AS Num_Customers FROM addresses GROUP BY State;", con=db) 
 
