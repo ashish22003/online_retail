@@ -9,8 +9,8 @@ import numpy as np
 # from streamlit_lottie import st_lottie 
 
 def launch_connection():
-    # db = ms.connect(host='sql12.freemysqlhosting.net',user='sql12708755',passwd='e5SyF2djWm',database='sql12708755')
-    db = ms.connect(host='onlinestore-online-store.k.aivencloud.com',user='avnadmin',passwd='AVNS_Fi83pyy2l1NGEp4VGjc',database='defaultdb')
+    db = ms.connect(host='sql12.freemysqlhosting.net',user='sql12708755',passwd='e5SyF2djWm',database='sql12708755')
+    
     return db
 
 def display_header():
